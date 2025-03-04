@@ -11,10 +11,10 @@ class CategoryController extends Controller
   /**
    * @OA\Get(
    *     path="/api/categories",
-   *     summary="Lädt alle Anlagegüter",
+   *     summary="Loads all asset categories",
    *     @OA\Response(
    *         response=200,
-   *         description="Anlagegüter erfolgreich geladen"
+   *         description="Asset categories loaded successfully"
    *     )
    * )
    */
@@ -34,11 +34,11 @@ class CategoryController extends Controller
   /**
    * @OA\Get(
    *     path="/api/categories/{id}",
-   *     summary="Lädt ein Anlagegut anhand seiner Id",
+   *     summary="Loads an asset category by its ID",
    *       @OA\Parameter(
    *         name="id",
    *         in="path",
-   *         description="ID des abzurufenden Anlageguts",
+   *         description="ID of the category to load",
    *         required=true,
    *         @OA\Schema(
    *             type="integer",
@@ -47,11 +47,11 @@ class CategoryController extends Controller
    *     ),
    *     @OA\Response(
    *         response=200,
-   *         description="Anlagegut erfolgreich geladen"
+   *         description="Asset category successfully loaded"
    *     ),
    *     @OA\Response(
    *         response=404,
-   *         description="Anlagegut nicht gefunden"
+   *         description="Asset category not found"
    *     )
    * )
    */

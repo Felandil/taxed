@@ -4,11 +4,24 @@ namespace App\Usecase;
 
 abstract class UsecaseResponse
 {
-  public static int $CodeSuccess = 1;
-  public static int $CodeInvalidAssetCategory = -1;
-  public static int $CodeInvalidAssetName = -2;
-  public static int $CodeInvalidAssetPrice = -3;
-  public static int $CodeUnknownError = -3;
+  public const CODE_SUCCESS = 1;
+  public const CODE_INVALID_ASSET_CATEGORY = -1;
+  public const CODE_INVALID_ASSET_NAME = -2;
+  public const CODE_INVALID_ASSET_PRICE = -3;
+  public const CODE_UNKNOWN_ERROR = -4;
+
+  /**
+   * Mapping of error codes to messages
+   * @var array
+   */
+  protected static array $messages = [
+    self::CODE_SUCCESS => 'Success',
+    self::CODE_INVALID_ASSET_CATEGORY => 'Invalid Asset Category',
+    self::CODE_INVALID_ASSET_NAME => 'Invalid Asset Name',
+    self::CODE_INVALID_ASSET_PRICE => 'Invalid Asset Price',
+    self::CODE_UNKNOWN_ERROR => 'Unknown Error',
+  ];
+
   public int $code;
 
   /**
@@ -17,5 +30,17 @@ abstract class UsecaseResponse
   public function __construct(int $code)
   {
     $this->code = $code;
+  }
+
+  /**
+   * Resolves a given code to the corresponding message
+   * 
+   * @param int $code
+   * 
+   * @return string
+   */
+  public function getMessageForCode(): string
+  {
+    return self::$messages[$this->code] ?? 'Unbekannter Fehlercode';
   }
 }

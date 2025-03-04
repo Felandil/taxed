@@ -54,10 +54,10 @@ class AddMovableAssetInteractorTest extends TestCase
     $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([]));
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 1000, 0));
-    $this->assertEquals(UsecaseResponse::$CodeInvalidAssetCategory, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_CATEGORY, $response->code);
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 1000, -1));
-    $this->assertEquals(UsecaseResponse::$CodeInvalidAssetCategory, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_CATEGORY, $response->code);
   }
 
   public function testEmptyNameShouldReturnErrorCodeInvalidAssetName()
@@ -65,7 +65,7 @@ class AddMovableAssetInteractorTest extends TestCase
     $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([]));
 
     $response = $interactor->execute(new AddMovableAssetRequest('', 1000, 1));
-    $this->assertEquals(UsecaseResponse::$CodeInvalidAssetName, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_NAME, $response->code);
   }
 
   public function testPriceSmallerOrEqualZeroShouldReturnErrorCodeInvalidAssetPrice()
@@ -73,10 +73,10 @@ class AddMovableAssetInteractorTest extends TestCase
     $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([]));
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 0, 1));
-    $this->assertEquals(UsecaseResponse::$CodeInvalidAssetPrice, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_PRICE, $response->code);
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', -1, 1));
-    $this->assertEquals(UsecaseResponse::$CodeInvalidAssetPrice, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_PRICE, $response->code);
   }
 
   public function testAssetCategoryDoesNotExistShouldReturnErrorCodeInvalidAssetCategory()
@@ -84,7 +84,7 @@ class AddMovableAssetInteractorTest extends TestCase
     $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([]));
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 1000, 100));
-    $this->assertEquals(UsecaseResponse::$CodeInvalidAssetCategory, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_CATEGORY, $response->code);
   }
 
   public function testExceptionIsThrownShouldReturnErrorCodeUnknown()
@@ -95,7 +95,7 @@ class AddMovableAssetInteractorTest extends TestCase
     $interactor = new AddMovableAssetInteractor($repository);
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 1000, 1));
-    $this->assertEquals(UsecaseResponse::$CodeUnknownError, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_UNKNOWN_ERROR, $response->code);
   }
 
   public function testValidRequestShouldReturnSuccessAndCreatedAsset()
@@ -109,7 +109,7 @@ class AddMovableAssetInteractorTest extends TestCase
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 1000, 1));
 
-    $this->assertEquals(UsecaseResponse::$CodeSuccess, $response->code);
+    $this->assertEquals(UsecaseResponse::CODE_SUCCESS, $response->code);
     $this->assertEquals('AssetName', $response->asset->name);
     $this->assertEquals(1000, $response->asset->price);
     $this->assertEquals(1, $response->asset->assetCategoryId);

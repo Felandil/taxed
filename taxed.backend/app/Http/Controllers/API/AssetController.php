@@ -7,7 +7,7 @@ use App\Repository\TaxedSQLiteRepository;
 
 use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
-use App\Usecase\UseCaseResponse;
+use App\Usecase\AddMovableAsset\AddMovableAssetPresenter;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -24,7 +24,7 @@ class AssetController extends Controller
     /**
      * @OA\Post(
      *     path="/api/assets",
-     *     summary="Fügt ein neues bewegliches Gut hinzu",
+     *     summary="Adds a new movable asset",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -35,7 +35,11 @@ class AssetController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Bewegliches Gut erfolgreich hinzugefügt"
+     *         description="Movables asset created successfully"
+     *     ),
+     *    @OA\Response(
+     *         response=400,
+     *         description="Movables asset could not be created, see response body for details"
      *     )
      * )
      */
@@ -50,25 +54,17 @@ class AssetController extends Controller
         $interactor = new AddMovableAssetInteractor($this->repository);
         $response = $interactor->execute(new AddMovableAssetRequest($data['name'], (float) $data['price'], (int) $data['categoryId']));
 
-        if ($response->code !== UsecaseResponse::$CodeSuccess) {
-            return response()->json(['message' => 'Error'], 400);
-        }
-
-        $locationUrl = route('asset.get', ['id' => $response->asset->id]);
-
-        return response()->json([
-            'asset' => $response->asset
-        ], 201)->header('Location', $locationUrl);
+        return AddMovableAssetPresenter::present($response);
     }
 
     /**
      * @OA\Get(
      *     path="/api/assets/{id}",
-     *     summary="Lädt ein bewegliches Gut anhand seiner Id",
+     *     summary="Loads a movable asset by its ID",
      *       @OA\Parameter(
      *         name="id",
      *         in="path",
-     *         description="ID des abzurufenden beweglichen Guts",
+     *         description="ID of the asset to load",
      *         required=true,
      *         @OA\Schema(
      *             type="integer",
@@ -77,11 +73,11 @@ class AssetController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Bewegliches Gut erfolgreich geladen"
+     *         description="Movable asset successfully loaded"
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Bewegliches Gut nicht gefunden"
+     *         description="Movable asset not found"
      *     )
      * )
      */
@@ -99,10 +95,10 @@ class AssetController extends Controller
     /**
      * @OA\Get(
      *     path="/api/assets",
-     *     summary="Lädt alle beweglichen Güter",
+     *     summary="Loads all movable assets",
      *     @OA\Response(
      *         response=200,
-     *         description="Bewegliche Güter erfolgreich geladen"
+     *         description="Movables assets successfully loaded"
      *     )
      * )
      */

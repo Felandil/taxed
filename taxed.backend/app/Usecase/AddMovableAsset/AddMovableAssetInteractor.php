@@ -34,11 +34,11 @@ class AddMovableAssetInteractor
 
       $asset = $this->repository->addMovableAsset($request->name, $request->price, $request->assetCategoryId);
 
-      return new AddMovableAssetResponse(UsecaseResponse::$CodeSuccess, $asset);
+      return new AddMovableAssetResponse(UsecaseResponse::CODE_SUCCESS, $asset);
     } catch (UsecaseException $e) {
       return new AddMovableAssetResponse($e->getCode());
     } catch (\Exception $e) {
-      return new AddMovableAssetResponse(UsecaseResponse::$CodeUnknownError);
+      return new AddMovableAssetResponse(UsecaseResponse::CODE_UNKNOWN_ERROR);
     }
   }
 
@@ -52,20 +52,20 @@ class AddMovableAssetInteractor
   private function validateRequest(AddMovableAssetRequest $request)
   {
     if (empty($request->name)) {
-      throw new UsecaseException(UsecaseResponse::$CodeInvalidAssetName);
+      throw new UsecaseException(UsecaseResponse::CODE_INVALID_ASSET_NAME);
     }
 
     if ($request->price <= 0) {
-      throw new UsecaseException(UsecaseResponse::$CodeInvalidAssetPrice);
+      throw new UsecaseException(UsecaseResponse::CODE_INVALID_ASSET_PRICE);
     }
 
     if ($request->assetCategoryId <= 0) {
-      throw new UsecaseException(UsecaseResponse::$CodeInvalidAssetCategory);
+      throw new UsecaseException(UsecaseResponse::CODE_INVALID_ASSET_CATEGORY);
     }
 
     $category = $this->repository->getMovableAssetCategoryById($request->assetCategoryId);
     if ($category == null) {
-      throw new UsecaseException(UsecaseResponse::$CodeInvalidAssetCategory);
+      throw new UsecaseException(UsecaseResponse::CODE_INVALID_ASSET_CATEGORY);
     }
   }
 }
