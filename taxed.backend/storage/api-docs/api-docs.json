@@ -1,0 +1,82 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Tax Administration API",
+        "description": "REST API to support tax management with movable assets",
+        "contact": {
+            "email": "support@no.de"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/assets": {
+            "get": {
+                "summary": "Lädt alle Assets",
+                "operationId": "3a1b7677aa28007e8f83ef43e28233be",
+                "responses": {
+                    "200": {
+                        "description": "Assets erfolgreich geladen"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Fügt ein neues Asset hinzu",
+                "operationId": "66e3f15b3fd78d4486152fcc9e1bcd1f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Asset erfolgreich hinzugefügt"
+                    }
+                }
+            }
+        },
+        "/api/assets/{id}": {
+            "get": {
+                "summary": "Lädt ein Asset anhand seiner Id",
+                "operationId": "815999c1235e2e02fe8d690b5ddb6d48",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID des abzurufenden Assets",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Asset erfolgreich geladen"
+                    },
+                    "404": {
+                        "description": "Asset nicht gefunden"
+                    }
+                }
+            }
+        }
+    }
+}
