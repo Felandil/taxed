@@ -4,6 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Models\MovableAsset;
 use App\Repository\TaxedSQLiteRepository;
+
+use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
+use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
+use App\Usecase\UseCaseResponse;
+
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -42,11 +47,17 @@ class AssetController extends Controller
             'categoryId' => 'required|numeric'
         ]);
 
-        $asset = $this->repository->addMovableAsset($data['name'], (float) $data['price'], (int) $data['categoryId']);
-        $locationUrl = route('asset.get', ['id' => $asset->id]);
+        $interactor = new AddMovableAssetInteractor($this->repository);
+        $response = $interactor->execute(new AddMovableAssetRequest($data['name'], (float) $data['price'], (int) $data['categoryId']));
+
+        if ($response->code !== UsecaseResponse::$CodeSuccess) {
+            return response()->json(['message' => 'Error'], 400);
+        }
+
+        $locationUrl = route('asset.get', ['id' => $response->asset->id]);
 
         return response()->json([
-            'asset' => $asset
+            'asset' => $response->asset
         ], 201)->header('Location', $locationUrl);
     }
 
