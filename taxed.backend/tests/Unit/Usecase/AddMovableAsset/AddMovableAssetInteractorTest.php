@@ -3,7 +3,6 @@
 namespace Tests\Unit\Usecase\AddMovableAsset;
 
 use Illuminate\Database\Connection;
-use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
 

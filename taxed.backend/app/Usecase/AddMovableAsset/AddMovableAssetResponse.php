@@ -9,6 +9,10 @@ class AddMovableAssetResponse extends UsecaseResponse
 {
   public ?MovableAsset $asset;
 
+  /**
+   * @param int $code
+   * @param mixed $asset
+   */
   public function __construct(int $code, ?MovableAsset $asset = null)
   {
     parent::__construct($code);

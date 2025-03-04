@@ -16,20 +16,30 @@ class TaxedSQLiteRepository implements ITaxedRepository
   }
 
   /**
-   * @returns MovableAsset[]
+   * @return MovableAsset[]
    */
   public function loadMovableAssets(): array
   {
     $movableAssets = MovableAsset::all();
-    
+
     return $movableAssets->toArray();
   }
 
+  /**
+   * @param int $id
+   * @return AssetCategory|null
+   */
   public function getMovableAssetCategoryById(int $id): ?AssetCategory
   {
     return AssetCategory::find($id);
   }
 
+  /**
+   * @param string $name
+   * @param float $price
+   * @param int $categoryId
+   * @return MovableAsset
+   */
   public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
   {
     $asset = new MovableAsset();

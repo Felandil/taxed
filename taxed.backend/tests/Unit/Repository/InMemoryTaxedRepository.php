@@ -19,8 +19,8 @@ class InMemoryTaxedRepository implements ITaxedRepository
     $this->movableAssetCategories = $assetCategories;
   }
 
-	public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
-	{
+  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
+  {
     if ($this->throwException) {
       throw new \Exception('Some error');
     }
@@ -33,7 +33,7 @@ class InMemoryTaxedRepository implements ITaxedRepository
     $asset->exists = true;
 
     return $asset;
-	}
+  }
 
   public function getMovableAssetCategoryById(int $id): ?AssetCategory
   {
@@ -43,7 +43,7 @@ class InMemoryTaxedRepository implements ITaxedRepository
 
     foreach ($this->movableAssetCategories as $category) {
       if ($category->id === $id) {
-          return $category;
+        return $category;
       }
     }
 

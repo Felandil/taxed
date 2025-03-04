@@ -8,6 +8,11 @@ class AddMovableAssetRequest
     public float $price;
     public int $assetCategoryId;
 
+    /**
+     * @param string $name
+     * @param float $price
+     * @param int $assetCategoryId
+     */
     public function __construct(string $name, float $price, int $assetCategoryId)
     {
         $this->name = $name;

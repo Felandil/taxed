@@ -37,15 +37,16 @@ class AssetController extends Controller
     public function add(Request $request)
     {
         $data = $request->validate([
-            'name'  => 'required|string',
-            'price' => 'required|numeric'
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'categoryId' => 'required|numeric'
         ]);
 
-        $asset = $this->repository->addMovableAsset($data['name'], (float) $data['price']);
+        $asset = $this->repository->addMovableAsset($data['name'], (float) $data['price'], (int) $data['categoryId']);
         $locationUrl = route('asset.get', ['id' => $asset->id]);
 
         return response()->json([
-            'asset'  => $asset
+            'asset' => $asset
         ], 201)->header('Location', $locationUrl);
     }
 

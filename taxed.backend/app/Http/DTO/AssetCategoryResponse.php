@@ -26,7 +26,7 @@ class AssetCategoryResponse
         $this->name = $name;
 
         if ($useful_life !== null) {
-          $this->useful_life = $useful_life;
+            $this->useful_life = $useful_life;
         }
 
         if ($depreciation_rate !== null) {
@@ -34,7 +34,7 @@ class AssetCategoryResponse
         }
 
         if (count($categories) > 0) {
-          $this->categories = $categories;
+            $this->categories = $categories;
         }
     }
 

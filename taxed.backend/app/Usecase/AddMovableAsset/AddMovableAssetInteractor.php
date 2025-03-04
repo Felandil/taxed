@@ -7,38 +7,48 @@ use App\Usecase\UsecaseResponse;
 use App\Repository\ITaxedRepository;
 use App\Usecase\Exceptions\UsecaseException;
 
+/**
+ * Adds a movable asset
+ */
 class AddMovableAssetInteractor
 {
   private $repository;
 
+  /**
+   * @param \App\Repository\ITaxedRepository $repository
+   */
   public function __construct(ITaxedRepository $repository)
   {
     $this->repository = $repository;
   }
 
+  /**
+   * @param \App\Usecase\AddMovableAsset\AddMovableAssetRequest $request
+   * 
+   * @return AddMovableAssetResponse
+   */
   public function execute(AddMovableAssetRequest $request): AddMovableAssetResponse
   {
-    try 
-    {
+    try {
       $this->validateRequest($request);
 
       $asset = $this->repository->addMovableAsset($request->name, $request->price, $request->assetCategoryId);
 
       return new AddMovableAssetResponse(UsecaseResponse::$CodeSuccess, $asset);
-    }
-    catch (UsecaseException $e)
-    {
+    } catch (UsecaseException $e) {
       return new AddMovableAssetResponse($e->getCode());
-    }
-    catch (\Exception $e)
-    {
-      // TODO: add logging
-      echo($e->getMessage());
-
+    } catch (\Exception $e) {
       return new AddMovableAssetResponse(UsecaseResponse::$CodeUnknownError);
     }
   }
 
+  /**
+   * @param \App\Usecase\AddMovableAsset\AddMovableAssetRequest $request
+   * 
+   * @throws \App\Usecase\Exceptions\UsecaseException
+   * 
+   * @return void
+   */
   private function validateRequest(AddMovableAssetRequest $request)
   {
     if (empty($request->name)) {
