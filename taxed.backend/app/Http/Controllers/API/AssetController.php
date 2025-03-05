@@ -30,7 +30,8 @@ class AssetController extends Controller
      *         @OA\JsonContent(
      *             required={"name","price"},
      *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="price", type="number", format="float")
+     *             @OA\Property(property="price", type="number", format="float"),
+     *             @OA\Property(property="categoryId", type="number", format="int")
      *         )
      *     ),
      *     @OA\Response(
@@ -45,16 +46,20 @@ class AssetController extends Controller
      */
     public function add(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'price' => 'required|numeric',
-            'categoryId' => 'required|numeric'
-        ]);
+        try {
+            $data = $request->validate([
+                'name' => 'required|string',
+                'price' => 'required|numeric',
+                'categoryId' => 'required|numeric'
+            ]);
 
-        $interactor = new AddMovableAssetInteractor($this->repository);
-        $response = $interactor->execute(new AddMovableAssetRequest($data['name'], (float) $data['price'], (int) $data['categoryId']));
+            $interactor = new AddMovableAssetInteractor($this->repository);
+            $response = $interactor->execute(new AddMovableAssetRequest($data['name'], (float) $data['price'], (int) $data['categoryId']));
 
-        return AddMovableAssetPresenter::present($response);
+            return AddMovableAssetPresenter::present($response);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 
     /**

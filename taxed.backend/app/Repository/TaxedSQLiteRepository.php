@@ -27,6 +27,7 @@ class TaxedSQLiteRepository implements ITaxedRepository
 
   /**
    * @param int $id
+   * 
    * @return AssetCategory|null
    */
   public function getMovableAssetCategoryById(int $id): ?AssetCategory
@@ -38,6 +39,7 @@ class TaxedSQLiteRepository implements ITaxedRepository
    * @param string $name
    * @param float $price
    * @param int $categoryId
+   * 
    * @return MovableAsset
    */
   public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
@@ -46,7 +48,7 @@ class TaxedSQLiteRepository implements ITaxedRepository
     $asset->name = $name;
     $asset->price = $price;
     $asset->bookedAt = date('Y-m-d H:i:s');
-    $asset->assetCategoryId = $categoryId;
+    $asset->asset_category_id = $categoryId;
 
     $asset->save();
 

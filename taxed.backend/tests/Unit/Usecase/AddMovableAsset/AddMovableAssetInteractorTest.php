@@ -68,6 +68,14 @@ class AddMovableAssetInteractorTest extends TestCase
     $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_NAME, $response->code);
   }
 
+  public function testNameTooShortShouldReturnErrorCodeInvalidAssetName()
+  {
+    $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([]));
+
+    $response = $interactor->execute(new AddMovableAssetRequest('Te', 1000, 1));
+    $this->assertEquals(UsecaseResponse::CODE_INVALID_ASSET_NAME, $response->code);
+  }
+
   public function testPriceSmallerOrEqualZeroShouldReturnErrorCodeInvalidAssetPrice()
   {
     $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([]));

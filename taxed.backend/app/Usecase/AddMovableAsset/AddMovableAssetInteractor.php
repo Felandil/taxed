@@ -51,7 +51,7 @@ class AddMovableAssetInteractor
    */
   private function validateRequest(AddMovableAssetRequest $request)
   {
-    if (empty($request->name)) {
+    if (empty($request->name) || strlen($request->name) < 3) {
       throw new UsecaseException(UsecaseResponse::CODE_INVALID_ASSET_NAME);
     }
 

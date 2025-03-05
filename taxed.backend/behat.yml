@@ -1,0 +1,11 @@
+default:
+  suites:
+    default:
+      paths:
+        - tests/Feature
+      contexts:
+        - Tests\Feature\FeatureContext
+  # extensions:
+  #   Laracasts\Behat\ServiceContainer\LaravelExtension:
+  #     env_path: .env.behat
+  #     bootstrap: bootstrap/app.php

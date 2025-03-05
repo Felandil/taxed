@@ -11,16 +11,16 @@
     "paths": {
         "/api/assets": {
             "get": {
-                "summary": "Lädt alle Assets",
+                "summary": "Loads all movable assets",
                 "operationId": "3a1b7677aa28007e8f83ef43e28233be",
                 "responses": {
                     "200": {
-                        "description": "Assets erfolgreich geladen"
+                        "description": "Movables assets successfully loaded"
                     }
                 }
             },
             "post": {
-                "summary": "Fügt ein neues Asset hinzu",
+                "summary": "Adds a new movable asset",
                 "operationId": "66e3f15b3fd78d4486152fcc9e1bcd1f",
                 "requestBody": {
                     "required": true,
@@ -38,6 +38,10 @@
                                     "price": {
                                         "type": "number",
                                         "format": "float"
+                                    },
+                                    "categoryId": {
+                                        "type": "number",
+                                        "format": "int"
                                     }
                                 },
                                 "type": "object"
@@ -47,20 +51,23 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Asset erfolgreich hinzugefügt"
+                        "description": "Movables asset created successfully"
+                    },
+                    "400": {
+                        "description": "Movables asset could not be created, see response body for details"
                     }
                 }
             }
         },
         "/api/assets/{id}": {
             "get": {
-                "summary": "Lädt ein Asset anhand seiner Id",
+                "summary": "Loads a movable asset by its ID",
                 "operationId": "815999c1235e2e02fe8d690b5ddb6d48",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID des abzurufenden Assets",
+                        "description": "ID of the asset to load",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -70,10 +77,47 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Asset erfolgreich geladen"
+                        "description": "Movable asset successfully loaded"
                     },
                     "404": {
-                        "description": "Asset nicht gefunden"
+                        "description": "Movable asset not found"
+                    }
+                }
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "summary": "Loads all asset categories",
+                "operationId": "359d1c07dfb50588f7b8fbe2a366fec8",
+                "responses": {
+                    "200": {
+                        "description": "Asset categories loaded successfully"
+                    }
+                }
+            }
+        },
+        "/api/categories/{id}": {
+            "get": {
+                "summary": "Loads an asset category by its ID",
+                "operationId": "f98330343eb6eebb820323c5459c563b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the category to load",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Asset category successfully loaded"
+                    },
+                    "404": {
+                        "description": "Asset category not found"
                     }
                 }
             }

@@ -14,5 +14,5 @@ namespace App\Http\Controllers\API;
  */
 class SwaggerInfo
 {
-    // Diese Klasse muss keinen Inhalt haben. Der DocBlock reicht aus.
+    // This class is used to document the API in Swagger
 }
