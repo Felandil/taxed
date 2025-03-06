@@ -39,11 +39,11 @@ class AssetController extends Controller
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Movables asset created successfully"
+     *         description="Movable asset created successfully"
      *     ),
      *    @OA\Response(
      *         response=400,
-     *         description="Movables asset could not be created, see response body for details"
+     *         description="Movable asset could not be created, see response body for details"
      *     )
      * )
      */

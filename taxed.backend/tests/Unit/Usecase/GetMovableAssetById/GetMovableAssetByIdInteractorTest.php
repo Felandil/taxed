@@ -2,47 +2,16 @@
 
 namespace Tests\Unit\Usecase\GetMovableAssetById;
 
-use Illuminate\Database\Connection;
-use Illuminate\Database\Query\Grammars\Grammar;
-use Illuminate\Database\Query\Processors\Processor;
-
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdInteractor;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdRequest;
 use App\Usecase\UsecaseResponse;
-
-use PHPUnit\Framework\TestCase;
-
-use App\Models\AssetCategory;
 use App\Models\MovableAsset;
 
 use Tests\Unit\Repository\InMemoryTaxedRepository;
-use Tests\Unit\Repository\DummyConnectionResolver;
+use Tests\Unit\Usecase\UsecaseTestCase;
 
-use Mockery;
-
-class GetMovableAssetByIdInteractorTest extends TestCase
+class GetMovableAssetByIdInteractorTest extends UsecaseTestCase
 {
-  protected function setUp(): void
-  {
-    parent::setUp();
-
-    $dummyGrammar = Mockery::mock(Grammar::class);
-    $dummyGrammar->shouldReceive('getDateFormat')->andReturn('Y-m-d H:i:s');
-
-    $dummyConnection = Mockery::mock(Connection::class);
-    $dummyConnection->shouldReceive('getQueryGrammar')
-      ->andReturn($dummyGrammar);
-    $dummyConnection->shouldReceive('getPostProcessor')
-      ->andReturn(Mockery::mock(Processor::class));
-    $dummyConnection->shouldReceive('getPostProcessor')
-      ->andReturn(Mockery::mock(Processor::class));
-
-    $dummyResolver = new DummyConnectionResolver($dummyConnection);
-
-    AssetCategory::setConnectionResolver($dummyResolver);
-    MovableAsset::setConnectionResolver($dummyResolver);
-  }
-
   public function testAssetWithIdDoesNotExistShouldReturnErrorCodeAssetNotFound()
   {
     $interactor = new GetMovableAssetByIdInteractor(new InMemoryTaxedRepository([], []));

@@ -2,53 +2,17 @@
 
 namespace Tests\Unit\Usecase\AddMovableAsset;
 
-use Illuminate\Database\Connection;
-use Illuminate\Database\Query\Grammars\Grammar;
-use Illuminate\Database\Query\Processors\Processor;
-
-use PHPUnit\Framework\TestCase;
 use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
 use App\Usecase\UsecaseResponse;
 
 use App\Models\AssetCategory;
-use App\Models\MovableAsset;
-
-use Mockery;
 
 use Tests\Unit\Repository\InMemoryTaxedRepository;
-use Tests\Unit\Repository\DummyConnectionResolver;
+use Tests\Unit\Usecase\UsecaseTestCase;
 
-class AddMovableAssetInteractorTest extends TestCase
+class AddMovableAssetInteractorTest extends UsecaseTestCase
 {
-  protected function setUp(): void
-  {
-    parent::setUp();
-
-    $dummyGrammar = Mockery::mock(Grammar::class);
-    $dummyGrammar->shouldReceive('getDateFormat')->andReturn('Y-m-d H:i:s');
-
-    $dummyConnection = Mockery::mock(Connection::class);
-    $dummyConnection->shouldReceive('getQueryGrammar')
-      ->andReturn($dummyGrammar);
-    $dummyConnection->shouldReceive('getPostProcessor')
-      ->andReturn(Mockery::mock(Processor::class));
-    $dummyConnection->shouldReceive('getPostProcessor')
-      ->andReturn(Mockery::mock(Processor::class));
-
-    $dummyResolver = new DummyConnectionResolver($dummyConnection);
-
-    AssetCategory::setConnectionResolver($dummyResolver);
-    MovableAsset::setConnectionResolver($dummyResolver);
-  }
-
-  protected function tearDown(): void
-  {
-    parent::tearDown();
-
-    Mockery::close();
-  }
-
   public function testCategoryIdSmallerOrEqualZeroShouldReturnErrorCodeInvalidAssetCategory()
   {
     $interactor = new AddMovableAssetInteractor(new InMemoryTaxedRepository([], []));
