@@ -88,6 +88,35 @@ class MovableAsset
   }
 
   /**
+   * @return int
+   */
+  public function getDepreciationMonthCount(): int
+  {
+    return $this->category->getUsefulLife() * 12;
+  }
+
+  /**
+   * calculate depreciation amount per month, use simple rounding
+   * 
+   * @return float
+   */
+  public function getMonthlyDepreciation(): float
+  {
+    return round($this->price / $this->getDepreciationMonthCount(), 2);
+  }
+
+  /**
+   * since we are using simple rounding, there might be a difference between the total depreciation amount and the original price
+   * this amount can be added either to the first or the last month's depreciation amount
+   * 
+   * @return float
+   */
+  public function getDepreciationAmountDifference(): float
+  {
+    return round($this->price - $this->getMonthlyDepreciation() * $this->getDepreciationMonthCount(), 2);
+  }
+
+  /**
    * @return array
    */
   public function __serialize(): array
@@ -98,6 +127,7 @@ class MovableAsset
       'price' => $this->price,
       'bookedAt' => $this->bookedAt->format('Y-m-d H:i:s'),
       'category' => $this->category->__serialize(),
+      'monthlyDepreciation' => $this->getMonthlyDepreciation()
     ];
   }
 }

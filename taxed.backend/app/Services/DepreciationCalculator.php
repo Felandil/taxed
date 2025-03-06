@@ -2,89 +2,89 @@
 
 namespace App\Services;
 
-use App\Repository\Models\AssetCategory;
-use App\Repository\Models\MovableAssetSQLiteModel;
+use App\Entity\MovableAsset;
+use App\Entity\DepreciationPeriod;
 
 use Carbon\Carbon;
 
 class DepreciationCalculator
 {
-  public static function calculateDepreciation(MovableAssetSQLiteModel $asset)
+  /**
+   * @var Carbon
+   */
+  private $economyYearStart;
+
+  /**
+   * @var Carbon
+   */
+  private $economyYearEnd;
+
+  /**
+   * @param Carbon $economyYearStart
+   * @param Carbon $economyYearEnd
+   */
+  public function __construct(Carbon $economyYearStart, Carbon $economyYearEnd)
   {
-    $category = $asset->assetCategory();
+    $this->economyYearStart = $economyYearStart;
+    $this->economyYearEnd = $economyYearEnd;
+  }
 
-    $totalMonths = $category->useful_life * 12;
-    $monthlyDepreciation = $asset->price / $totalMonths;
-    $monthlyDepreciation = round($monthlyDepreciation, 100);
+  /**
+   * @param MovableAsset $asset
+   * 
+   * @return DepreciationPeriod[]
+   */
+  public function calculateDepreciation(MovableAsset $asset): array
+  {
+    $purchaseDate = Carbon::parse($asset->getBookedAt());
+    $totalMonths = $asset->getDepreciationMonthCount();
 
-    $purchaseDate = Carbon::parse($asset->bookedAt);
-    $depreciationEnd = $purchaseDate->copy()->addMonths($totalMonths);
-
-    // economy year: 01.10 - 30.09
-    if ($purchaseDate->month >= 10) {
-      $firstEconomyYearStart = Carbon::create($purchaseDate->year, 10, 1);
+    // determine the first economy year that the asset is part of
+    if ($purchaseDate->month >= $this->economyYearStart->month) {
+      $firstEconomyYearStart = Carbon::create($purchaseDate->year, $this->economyYearStart->month, 1);
     } else {
-      $firstEconomyYearStart = Carbon::create($purchaseDate->year - 1, 10, 1);
+      $firstEconomyYearStart = Carbon::create($purchaseDate->year - 1, $this->economyYearStart->month, 1);
     }
 
     $depreciationPerYear = [];
     $currentEconomyYearStart = $firstEconomyYearStart->copy();
     $totalDepreciatedMonths = 0;
 
-    // Schleife über alle Wirtschaftsjahre innerhalb der Abschreibungsperiode
-    while ($currentEconomyYearStart->lessThanOrEqualTo($depreciationEnd)) {
+    // loop all years within the depreciation period until all month are depreciated
+    while ($totalDepreciatedMonths < $asset->getDepreciationMonthCount()) {
       $economyYearStart = $currentEconomyYearStart->copy();
-      $economyYearEnd = $currentEconomyYearStart->copy()->addYear()->subDay(); // 30.09 des Folgejahres
+      $economyYearEnd = $currentEconomyYearStart->copy()->addYear()->subDay();
 
-      // Bestimme den tatsächlichen Zeitraum innerhalb des Wirtschaftsjahres, der abgeschrieben wird:
-      $periodStart = $purchaseDate->greaterThan($economyYearStart) ? $purchaseDate->copy() : $economyYearStart->copy();
-      $periodEnd = $depreciationEnd->lessThan($economyYearEnd) ? $depreciationEnd->copy() : $economyYearEnd->copy();
-
-      if ($periodStart->greaterThan($periodEnd)) {
-        $currentEconomyYearStart->addYear();
-        continue;
-      }
-
-      // Berechne die Anzahl der Monate in diesem Zeitraum.
-      // Wir runden die Differenz, und wenn 0 herauskommt, wird mindestens 1 Monat angesetzt.
-      $months = round($periodStart->diffInMonths($periodEnd), 0);
-      if ($months == 0) {
-        $months = 1;
-      }
-
-      // Für das erste Wirtschaftsjahr: Nutze den Zeitraum vom Kaufdatum bis zum Ende des Wirtschaftsjahres.
-      // Für nachfolgende Wirtschaftsjahre gilt: 12 Monate, außer im letzten Jahr.
+      // for the first economy year, the amount of months is the difference between the purchase date and the end of the economy year + 1
+      // for following years, the amount of months is 12, unless it is the last economy year, where the amount of months is the remaining months
       if ($economyYearStart->equalTo($firstEconomyYearStart)) {
-        // Anzahl Monate im ersten Wirtschaftsjahr = Differenz vom Kaufdatum bis zum Ende des Wirtschaftsjahres + 1
         $months = round($purchaseDate->diffInMonths($economyYearEnd) + 1, 0);
-      } else {
-        // Falls es das letzte Wirtschaftsjahr ist, in dem weniger als 12 Monate verbleiben:
-        $remaining = $totalMonths - $totalDepreciatedMonths;
-        if ($remaining < 12) {
-          $months = $remaining;
-        } else {
+        if ($months > 12) {
           $months = 12;
         }
+      } else {
+        $remaining = $totalMonths - $totalDepreciatedMonths;
+        $months = $remaining < 12 ? $remaining : 12;
       }
 
-      $totalDepreciatedMonths += $months;
-      $yearDepreciation = round($monthlyDepreciation * $months, 2);
-      $depreciationPerYear[] = [
-        'period' => $economyYearStart->format('d.m.Y') . '-' . $economyYearEnd->format('d.m.Y'),
-        'depreciation' => $yearDepreciation
-      ];
-
+      // prepare next loop
       $currentEconomyYearStart->addYear();
+      $totalDepreciatedMonths += $months;
+
+      // calculate the depreciation amount for this period
+      // if the asset is fully depreciated, add the remaining amount to the last period
+      $depreciation = $asset->getMonthlyDepreciation() * $months;
+      if ($totalDepreciatedMonths >= $asset->getDepreciationMonthCount()) {
+        $depreciation += $asset->getDepreciationAmountDifference();
+      } 
+
+      array_push($depreciationPerYear, new DepreciationPeriod(
+        $economyYearStart->toDate(), 
+        $economyYearEnd->toDate(), 
+        $depreciation
+      ));
     }
 
-    $sum = array_reduce($depreciationPerYear, function ($carry, $item) {
-      return $carry + $item['depreciation'];
-  }, 0);
-
-    $result = new \stdClass();
-    $result->depreciationPerMonth = round($monthlyDepreciation, 2);
-    $result->depreciationPerYear = $depreciationPerYear;
-
-    return $result;
+    return $depreciationPerYear;
   }
 }
