@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Routing\Controller;
-use App\Models\AssetCategory;
+use App\Repository\Models\AssetCategory;
 use App\Http\DTO\AssetCategoryResponse;
 
 class CategoryController extends Controller

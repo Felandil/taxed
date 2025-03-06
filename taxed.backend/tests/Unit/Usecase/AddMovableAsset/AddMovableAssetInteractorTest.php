@@ -6,12 +6,12 @@ use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
 use App\Usecase\UsecaseResponse;
 
-use App\Models\AssetCategory;
+use App\Repository\Models\AssetCategory;
 
 use Tests\Unit\Repository\InMemoryTaxedRepository;
-use Tests\Unit\Usecase\UsecaseTestCase;
+use Tests\Unit\MovableAssetTestCase;
 
-class AddMovableAssetInteractorTest extends UsecaseTestCase
+class AddMovableAssetInteractorTest extends MovableAssetTestCase
 {
   public function testCategoryIdSmallerOrEqualZeroShouldReturnErrorCodeInvalidAssetCategory()
   {

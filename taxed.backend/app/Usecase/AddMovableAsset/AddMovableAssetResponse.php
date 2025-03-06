@@ -3,7 +3,7 @@
 namespace App\Usecase\AddMovableAsset;
 
 use App\Usecase\UsecaseResponse;
-use App\Models\MovableAsset;
+use App\Repository\Models\MovableAsset;
 
 class AddMovableAssetResponse extends UsecaseResponse
 {

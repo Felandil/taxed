@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Models\MovableAsset;
-use App\Models\AssetCategory;
+use App\Repository\Models\MovableAsset;
+use App\Repository\Models\AssetCategory;
 use Illuminate\Database\DatabaseManager;
 
 class TaxedSQLiteRepository implements ITaxedRepository

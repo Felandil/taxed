@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\MovableAsset;
+use App\Repository\Models\MovableAsset;
 use App\Repository\TaxedSQLiteRepository;
 
 use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;

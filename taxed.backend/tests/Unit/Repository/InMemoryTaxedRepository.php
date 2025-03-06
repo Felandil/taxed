@@ -3,8 +3,8 @@
 namespace Tests\Unit\Repository;
 
 use App\Repository\ITaxedRepository;
-use App\Models\MovableAsset;
-use App\Models\AssetCategory;
+use App\Repository\Models\MovableAsset;
+use App\Repository\Models\AssetCategory;
 
 class InMemoryTaxedRepository implements ITaxedRepository
 {

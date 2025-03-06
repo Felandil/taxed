@@ -5,12 +5,12 @@ namespace Tests\Unit\Usecase\GetMovableAssetById;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdInteractor;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdRequest;
 use App\Usecase\UsecaseResponse;
-use App\Models\MovableAsset;
+use App\Repository\Models\MovableAsset;
 
 use Tests\Unit\Repository\InMemoryTaxedRepository;
-use Tests\Unit\Usecase\UsecaseTestCase;
+use Tests\Unit\MovableAssetTestCase;
 
-class GetMovableAssetByIdInteractorTest extends UsecaseTestCase
+class GetMovableAssetByIdInteractorTest extends MovableAssetTestCase
 {
   public function testAssetWithIdDoesNotExistShouldReturnErrorCodeAssetNotFound()
   {

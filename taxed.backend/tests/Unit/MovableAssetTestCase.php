@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Usecase;
+namespace Tests\Unit;
 
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
 
-use App\Models\AssetCategory;
-use App\Models\MovableAsset;
+use App\Repository\Models\AssetCategory;
+use App\Repository\Models\MovableAsset;
 
 use Tests\Unit\Repository\DummyConnectionResolver;
 
@@ -15,8 +15,8 @@ use Mockery;
 
 use PHPUnit\Framework\TestCase;
 
-abstract class UsecaseTestCase extends TestCase {
-  
+abstract class MovableAssetTestCase extends TestCase {
+
   protected function setUp(): void
   {
     parent::setUp();

@@ -2,7 +2,7 @@
 
 namespace App\Usecase\GetMovableAssetById;
 
-use App\Models\MovableAsset;
+use App\Repository\Models\MovableAsset;
 use App\Usecase\UsecaseResponse;
 
 class GetMovableAssetByIdResponse extends UsecaseResponse
