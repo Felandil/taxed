@@ -2,19 +2,20 @@
 
 namespace Tests\Unit\Repository;
 
+use App\Entity\AssetCategory;
+use App\Entity\MovableAsset;
 use App\Repository\ITaxedRepository;
-use App\Repository\Models\MovableAssetSQLiteModel;
-use App\Repository\Models\AssetCategorySQLiteModel;
+use DateTime;
 
 class InMemoryTaxedRepository implements ITaxedRepository
 {
   public $throwException = false;
   private $assetCategories = [];
-  private $assets;
+  private $assets = [];
 
   /**
-   * @param AssetCategorySQLiteModel[] $assetCategories
-   * @param MovableAssetSQLiteModel[] $assets
+   * @param AssetCategory[] $assetCategories
+   * @param MovableAsset[] $assets
    */
   public function __construct(array $assetCategories, array $assets)
   {
@@ -22,30 +23,27 @@ class InMemoryTaxedRepository implements ITaxedRepository
     $this->assets = $assets;
   }
 
-  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAssetSQLiteModel
+  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
   {
     if ($this->throwException) {
       throw new \Exception('Some error');
     }
 
-    $asset = new MovableAssetSQLiteModel();
-    $asset->name = $name;
-    $asset->price = $price;
-    $asset->bookedAt = date('Y-m-d H:i:s');
-    $asset->assetCategoryId = $categoryId;
-    $asset->exists = true;
+    $category = $this->getMovableAssetCategoryById($categoryId);
+    $asset = new MovableAsset(1, $name, $price, new DateTime(), $category);
+    array_push($this->assets, $asset);
 
     return $asset;
   }
 
-  public function getMovableAssetCategoryById(int $id): ?AssetCategorySQLiteModel
+  public function getMovableAssetCategoryById(int $id): ?AssetCategory
   {
     if ($this->throwException) {
       throw new \Exception('Some error');
     }
 
     foreach ($this->assetCategories as $category) {
-      if ($category->id === $id) {
+      if ($category->getId() === $id) {
         return $category;
       }
     }
@@ -53,14 +51,14 @@ class InMemoryTaxedRepository implements ITaxedRepository
     return null;
   }
 
-  public function getMovableAssetById(int $id): ?MovableAssetSQLiteModel
+  public function getMovableAssetById(int $id): ?MovableAsset
   {
     if ($this->throwException) {
       throw new \Exception('Some error');
     }
 
     foreach ($this->assets as $asset) {
-      if ($asset->id === $id) {
+      if ($asset->getId() === $id) {
         return $asset;
       }
     }

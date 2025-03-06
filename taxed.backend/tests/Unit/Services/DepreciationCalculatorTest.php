@@ -6,9 +6,9 @@ use App\Repository\Models\AssetCategorySQLiteModel;
 use App\Repository\Models\MovableAssetSQLiteModel;
 use App\Services\DepreciationCalculator;
 use Carbon\Carbon;
-use Tests\Unit\MovableAssetTestCase;
+use PHPUnit\Framework\TestCase;
 
-class DepreciationCalculatorTest extends MovableAssetTestCase
+class DepreciationCalculatorTest extends TestCase
 {
   function testStuff()
   {

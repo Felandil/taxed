@@ -2,16 +2,15 @@
 
 namespace Tests\Unit\Usecase\AddMovableAsset;
 
+use App\Entity\AssetCategory;
 use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
 use App\Usecase\UsecaseResponse;
 
-use App\Repository\Models\AssetCategorySQLiteModel;
-
+use PHPUnit\Framework\TestCase;
 use Tests\Unit\Repository\InMemoryTaxedRepository;
-use Tests\Unit\MovableAssetTestCase;
 
-class AddMovableAssetInteractorTest extends MovableAssetTestCase
+class AddMovableAssetInteractorTest extends TestCase
 {
   public function testCategoryIdSmallerOrEqualZeroShouldReturnErrorCodeInvalidAssetCategory()
   {
@@ -72,18 +71,15 @@ class AddMovableAssetInteractorTest extends MovableAssetTestCase
 
   public function testValidRequestShouldReturnSuccessAndCreatedAsset()
   {
-    $assetCategory = new AssetCategorySQLiteModel();
-    $assetCategory->id = 1;
-    $assetCategory->exists = true;
-
+    $assetCategory = new AssetCategory(1, "", 3, 3);
     $repository = new InMemoryTaxedRepository([$assetCategory], []);
     $interactor = new AddMovableAssetInteractor($repository);
 
     $response = $interactor->execute(new AddMovableAssetRequest('AssetName', 1000, 1));
 
     $this->assertEquals(UsecaseResponse::CODE_SUCCESS, $response->code);
-    $this->assertEquals('AssetName', $response->asset->name);
-    $this->assertEquals(1000, $response->asset->price);
-    $this->assertEquals(1, $response->asset->assetCategoryId);
+    $this->assertEquals('AssetName', $response->asset->getName());
+    $this->assertEquals(1000, $response->asset->getPrice());
+    $this->assertEquals(1, $response->asset->getCategory()->getId());
   }
 }

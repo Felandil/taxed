@@ -19,7 +19,7 @@ class GetMovableAssetByIdPresenter extends UsecasePresenter
     return response()->json([
       'code' => $response->code,
       'message' => $response->getMessageForCode(),
-      'asset' => $response->asset
+      'asset' => $response->asset->__serialize()
     ], 200);
   }
 }

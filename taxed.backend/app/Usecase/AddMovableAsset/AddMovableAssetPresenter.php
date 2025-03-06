@@ -17,7 +17,7 @@ class AddMovableAssetPresenter extends UsecasePresenter
    */
   protected function presentSuccess(UsecaseResponse $response): JsonResponse
   {
-    $locationUrl = route('asset.get', ['id' => $response->asset->id]);
+    $locationUrl = route('asset.get', ['id' => $response->asset->getId()]);
 
     return response()->json([
       'code' => $response->code,

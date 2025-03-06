@@ -2,6 +2,7 @@
 
 namespace App\Repository\Models;
 
+use App\Entity\MovableAsset;
 use Illuminate\Database\Eloquent\Model;
 
 class MovableAssetSQLiteModel extends Model
@@ -25,5 +26,16 @@ class MovableAssetSQLiteModel extends Model
     public function assetCategory()
     {
         return $this->belongsTo(AssetCategorySQLiteModel::class, 'asset_category_id');
+    }
+
+    public function toEntity(): MovableAsset
+    {
+        return new MovableAsset(
+            $this->id,
+            $this->name,
+            $this->price,
+            $this->bookedAt,
+            $this->assetCategory->toEntity()
+        );
     }
 }

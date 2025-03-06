@@ -2,6 +2,7 @@
 
 namespace App\Repository\Models;
 
+use App\Entity\AssetCategory;
 use Illuminate\Database\Eloquent\Model;
 
 class AssetCategorySQLiteModel extends Model
@@ -29,5 +30,13 @@ class AssetCategorySQLiteModel extends Model
     public function categories()
     {
         return $this->children()->with('categories');
+    }
+
+    /**
+     * @return AssetCategory
+     */
+    public function toEntity(): AssetCategory
+    {
+        return new AssetCategory($this->id, $this->name, $this->useful_life, $this->depreciation_rate);
     }
 }

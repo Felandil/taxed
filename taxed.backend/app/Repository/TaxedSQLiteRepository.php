@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
-use App\Repository\Models\MovableAssetSQLiteModel;
+use App\Entity\AssetCategory;
+use App\Entity\MovableAsset;
 use App\Repository\Models\AssetCategorySQLiteModel;
+use App\Repository\Models\MovableAssetSQLiteModel;
+use DateTime;
 use Illuminate\Database\DatabaseManager;
 
 class TaxedSQLiteRepository implements ITaxedRepository
@@ -16,7 +19,7 @@ class TaxedSQLiteRepository implements ITaxedRepository
   }
 
   /**
-   * @return MovableAssetSQLiteModel[]
+   * @return MovableAsset[]
    */
   public function loadMovableAssets(): array
   {
@@ -28,11 +31,11 @@ class TaxedSQLiteRepository implements ITaxedRepository
   /**
    * @param int $id
    * 
-   * @return AssetCategorySQLiteModel|null
+   * @return AssetCategory|null
    */
-  public function getMovableAssetCategoryById(int $id): ?AssetCategorySQLiteModel
+  public function getMovableAssetCategoryById(int $id): ?AssetCategory
   {
-    return AssetCategorySQLiteModel::find($id);
+    return AssetCategorySQLiteModel::find($id)?->toEntity();
   }
 
   /**
@@ -40,23 +43,25 @@ class TaxedSQLiteRepository implements ITaxedRepository
    * @param float $price
    * @param int $categoryId
    * 
-   * @return MovableAssetSQLiteModel
+   * @return MovableAsset
    */
-  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAssetSQLiteModel
+  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
   {
+    $bookedAt = new DateTime();
+
     $asset = new MovableAssetSQLiteModel();
     $asset->name = $name;
     $asset->price = $price;
-    $asset->bookedAt = date('Y-m-d H:i:s');
+    $asset->bookedAt = $bookedAt->format('Y-m-d H:i:s');
     $asset->asset_category_id = $categoryId;
 
     $asset->save();
 
-    return $asset;
+    return $asset->toEntity();
   }
 
-  public function getMovableAssetById(int $id): ?MovableAssetSQLiteModel
+  public function getMovableAssetById(int $id): ?MovableAsset
   {
-    return MovableAssetSQLiteModel::find($id);
+    return MovableAssetSQLiteModel::find($id)?->toEntity();
   }
 }

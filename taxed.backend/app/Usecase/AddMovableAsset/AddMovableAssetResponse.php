@@ -2,18 +2,18 @@
 
 namespace App\Usecase\AddMovableAsset;
 
+use App\Entity\MovableAsset;
 use App\Usecase\UsecaseResponse;
-use App\Repository\Models\MovableAssetSQLiteModel;
 
 class AddMovableAssetResponse extends UsecaseResponse
 {
-  public ?MovableAssetSQLiteModel $asset;
+  public ?MovableAsset $asset;
 
   /**
    * @param int $code
    * @param mixed $asset
    */
-  public function __construct(int $code, ?MovableAssetSQLiteModel $asset = null)
+  public function __construct(int $code, ?MovableAsset $asset = null)
   {
     parent::__construct($code);
 

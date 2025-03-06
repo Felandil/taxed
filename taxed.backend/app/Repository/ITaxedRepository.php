@@ -2,31 +2,32 @@
 
 namespace App\Repository;
 
-use App\Repository\Models\MovableAssetSQLiteModel;
-use App\Repository\Models\AssetCategorySQLiteModel;
+use App\Entity\AssetCategory;
+use App\Entity\MovableAsset;
+
 
 interface ITaxedRepository
 {
   /**
    * @param int $id
    * 
-   * @return ?AssetCategorySQLiteModel
+   * @return ?AssetCategory
    */
-  function getMovableAssetCategoryById(int $id): ?AssetCategorySQLiteModel;
+  function getMovableAssetCategoryById(int $id): ?AssetCategory;
 
   /**
    * @param string $name
    * @param float $price
    * @param int $categoryId
    * 
-   * @return MovableAssetSQLiteModel
+   * @return MovableAsset
    */
-  function addMovableAsset(string $name, float $price, int $categoryId): MovableAssetSQLiteModel;
+  function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset;
 
   /**
    * @param int $id
    * 
-   * @return ?MovableAssetSQLiteModel
+   * @return ?MovableAsset
    */
-  function getMovableAssetById(int $id): ?MovableAssetSQLiteModel;
+  function getMovableAssetById(int $id): ?MovableAsset;
 }

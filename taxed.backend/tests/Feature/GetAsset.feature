@@ -12,4 +12,4 @@ Feature: Get Asset
     Examples:
     | asset_id   | http_response_code | response_code  |
     | 0          | 404                | -5             |
-    | 1          | 200                | 1              |
+    | 16         | 200                | 1              |

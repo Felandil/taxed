@@ -2,15 +2,17 @@
 
 namespace Tests\Unit\Usecase\GetMovableAssetById;
 
+use App\Entity\AssetCategory;
+use App\Entity\MovableAsset;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdInteractor;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdRequest;
 use App\Usecase\UsecaseResponse;
-use App\Repository\Models\MovableAssetSQLiteModel;
 
+use DateTime;
+use PHPUnit\Framework\TestCase;
 use Tests\Unit\Repository\InMemoryTaxedRepository;
-use Tests\Unit\MovableAssetTestCase;
 
-class GetMovableAssetByIdInteractorTest extends MovableAssetTestCase
+class GetMovableAssetByIdInteractorTest extends TestCase
 {
   public function testAssetWithIdDoesNotExistShouldReturnErrorCodeAssetNotFound()
   {
@@ -33,17 +35,14 @@ class GetMovableAssetByIdInteractorTest extends MovableAssetTestCase
 
   public function testAssetExistsShouldReturnAssetAndCodeSuccess()
   {
-    $asset = new MovableAssetSQLiteModel();
-    $asset->exists = true;
-    $asset->id = 1;
-    $asset->name = 'SomeAsset';
-    $asset->price = 100;
+    $category = new AssetCategory(1, "", 3, 3);
+    $asset = new MovableAsset(1, "SomeAsset", 100, new DateTime(), $category);
 
     $interactor = new GetMovableAssetByIdInteractor(new InMemoryTaxedRepository([], [$asset]));
     $response = $interactor->execute(new GetMovableAssetByIdRequest(1));
 
     $this->assertEquals(UsecaseResponse::CODE_SUCCESS, $response->code);
-    $this->assertEquals($asset->name, $response->asset->name);
-    $this->assertEquals($asset->price, $response->asset->price);
+    $this->assertEquals($asset->getName(), $response->asset->getName());
+    $this->assertEquals($asset->getPrice(), $response->asset->getPrice());
   }
 }

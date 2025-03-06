@@ -2,18 +2,18 @@
 
 namespace App\Usecase\GetMovableAssetById;
 
-use App\Repository\Models\MovableAssetSQLiteModel;
+use App\Entity\MovableAsset;
 use App\Usecase\UsecaseResponse;
 
 class GetMovableAssetByIdResponse extends UsecaseResponse
 {
-  public ?MovableAssetSQLiteModel$asset;
+  public ?MovableAsset $asset;
 
   /**
    * @param int $code
-   * @param ?MovableAssetSQLiteModel $asset
+   * @param ?MovableAsset $asset
    */
-  public function __construct(int $code, ?MovableAssetSQLiteModel $asset = null)
+  public function __construct(int $code, ?MovableAsset $asset = null)
   {
     parent::__construct($code);
 
