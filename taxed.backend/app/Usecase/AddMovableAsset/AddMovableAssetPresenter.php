@@ -3,18 +3,20 @@
 namespace App\Usecase\AddMovableAsset;
 
 use App\Usecase\AddMovableAsset\AddMovableAssetResponse;
+use App\Usecase\UsecasePresenter;
 use App\Usecase\UsecaseResponse;
 
 use Illuminate\Http\JsonResponse;
 
-class AddMovableAssetPresenter
+class AddMovableAssetPresenter extends UsecasePresenter
 {
-  public static function present(AddMovableAssetResponse $response): JsonResponse
+  /**
+   * @param AddMovableAssetResponse $response
+   * 
+   * @return JsonResponse|mixed
+   */
+  protected function presentSuccess(UsecaseResponse $response): JsonResponse
   {
-    if ($response->code !== UsecaseResponse::CODE_SUCCESS) {
-      return response()->json(['code' => $response->code, 'message' => $response->getMessageForCode()], 400);
-    }
-
     $locationUrl = route('asset.get', ['id' => $response->asset->id]);
 
     return response()->json([

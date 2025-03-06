@@ -54,4 +54,9 @@ class TaxedSQLiteRepository implements ITaxedRepository
 
     return $asset;
   }
+
+  public function getMovableAssetById(int $id): ?MovableAsset
+  {
+    return MovableAsset::find($id);
+  }
 }

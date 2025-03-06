@@ -9,6 +9,9 @@ use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
 use App\Usecase\AddMovableAsset\AddMovableAssetPresenter;
 
+use App\Usecase\GetMovableAssetById\GetMovableAssetByIdInteractor;
+use App\Usecase\GetMovableAssetById\GetMovableAssetByIdPresenter;
+use App\Usecase\GetMovableAssetById\GetMovableAssetByIdRequest;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -56,7 +59,7 @@ class AssetController extends Controller
             $interactor = new AddMovableAssetInteractor($this->repository);
             $response = $interactor->execute(new AddMovableAssetRequest($data['name'], (float) $data['price'], (int) $data['categoryId']));
 
-            return AddMovableAssetPresenter::present($response);
+            return new AddMovableAssetPresenter()->present($response);
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
@@ -88,13 +91,14 @@ class AssetController extends Controller
      */
     public function get(int $id)
     {
-        $asset = MovableAsset::find($id);
+        try {
+            $interactor = new GetMovableAssetByIdInteractor($this->repository);
+            $response = $interactor->execute(new GetMovableAssetByIdRequest($id));
 
-        if (!$asset) {
-            return response()->json(['message' => 'Asset not found'], 404);
+            return new GetMovableAssetByIdPresenter()->present($response);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
         }
-
-        return response()->json($asset);
     }
 
     /**

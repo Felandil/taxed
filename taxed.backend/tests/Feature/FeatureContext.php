@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use Behat\Behat\Context\Context;
+use Behat\Step\Given;
+use Behat\Step\When;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Assert as PHPUnit;
@@ -11,7 +13,7 @@ use Illuminate\Foundation\Application;
 class FeatureContext implements Context
 {
     /**
-     * @var \Illuminate\Foundation\Application
+     * @var Application
      */
     private $app;
 
@@ -28,9 +30,13 @@ class FeatureContext implements Context
     private $payload = [];
 
     /**
-     * Inject Laravel's Application instance
-     *
-     * @param Application $app
+     * Asset id to retrieve via api/assets/{id}
+     * @var int
+     */
+    private $assetId;
+
+    /**
+     * Setup Laravel's Application instance
      */
     public function __construct()
     {
@@ -50,15 +56,31 @@ class FeatureContext implements Context
         ];
     }
 
+    #[Given('I want to retrieve an asset with the ID :assetId')]
+    public function iWantToRetrieveAnAssetWithTheId($assetId): void
+    {
+        $this->assetId = (int) $assetId;
+    }
+
     /**
      * @When I send a POST request to :uri
      */
     public function iSendAPOSTRequestTo($uri)
     {
-        // Create a POST request with JSON payload.
         $request = Request::create($uri, 'POST', [], [], [], [
             'Content-Type' => 'application/json'
         ], json_encode($this->payload));
+
+        $request->headers->set('Accept', 'application/json');
+        $request->headers->set('Content-Type', 'application/json');
+
+        $this->response = $this->app->handle($request);
+    }
+
+    #[When('I send a GET request to :uri')]
+    public function iSendAGetRequestTo($uri): void
+    {
+        $request = Request::create($uri, 'GET');
 
         $request->headers->set('Accept', 'application/json');
         $request->headers->set('Content-Type', 'application/json');

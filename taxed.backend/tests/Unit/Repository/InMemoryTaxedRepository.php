@@ -9,14 +9,17 @@ use App\Models\AssetCategory;
 class InMemoryTaxedRepository implements ITaxedRepository
 {
   public $throwException = false;
-  private $movableAssetCategories = [];
+  private $assetCategories = [];
+  private $assets;
 
   /**
    * @param AssetCategory[] $assetCategories
+   * @param MovableAsset[] $assets
    */
-  public function __construct(array $assetCategories)
+  public function __construct(array $assetCategories, array $assets)
   {
-    $this->movableAssetCategories = $assetCategories;
+    $this->assetCategories = $assetCategories;
+    $this->assets = $assets;
   }
 
   public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
@@ -41,9 +44,24 @@ class InMemoryTaxedRepository implements ITaxedRepository
       throw new \Exception('Some error');
     }
 
-    foreach ($this->movableAssetCategories as $category) {
+    foreach ($this->assetCategories as $category) {
       if ($category->id === $id) {
         return $category;
+      }
+    }
+
+    return null;
+  }
+
+  public function getMovableAssetById(int $id): ?MovableAsset
+  {
+    if ($this->throwException) {
+      throw new \Exception('Some error');
+    }
+
+    foreach ($this->assets as $asset) {
+      if ($asset->id === $id) {
+        return $asset;
       }
     }
 

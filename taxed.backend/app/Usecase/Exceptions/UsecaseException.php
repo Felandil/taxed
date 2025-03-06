@@ -2,6 +2,7 @@
 
 namespace App\Usecase\Exceptions;
 
+use App\Usecase\UsecaseResponse;
 use \Exception;
 
 /**
@@ -16,6 +17,6 @@ class UsecaseException extends Exception
     {
         $this->code = $code;
 
-        parent::__construct("Invalid asset category");
+        parent::__construct(UsecaseResponse::getMessageForCodeByCode($code));
     }
 }
