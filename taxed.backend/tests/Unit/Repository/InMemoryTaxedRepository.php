@@ -3,8 +3,8 @@
 namespace Tests\Unit\Repository;
 
 use App\Repository\ITaxedRepository;
-use App\Repository\Models\MovableAsset;
-use App\Repository\Models\AssetCategory;
+use App\Repository\Models\MovableAssetSQLiteModel;
+use App\Repository\Models\AssetCategorySQLiteModel;
 
 class InMemoryTaxedRepository implements ITaxedRepository
 {
@@ -13,8 +13,8 @@ class InMemoryTaxedRepository implements ITaxedRepository
   private $assets;
 
   /**
-   * @param AssetCategory[] $assetCategories
-   * @param MovableAsset[] $assets
+   * @param AssetCategorySQLiteModel[] $assetCategories
+   * @param MovableAssetSQLiteModel[] $assets
    */
   public function __construct(array $assetCategories, array $assets)
   {
@@ -22,13 +22,13 @@ class InMemoryTaxedRepository implements ITaxedRepository
     $this->assets = $assets;
   }
 
-  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
+  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAssetSQLiteModel
   {
     if ($this->throwException) {
       throw new \Exception('Some error');
     }
 
-    $asset = new MovableAsset();
+    $asset = new MovableAssetSQLiteModel();
     $asset->name = $name;
     $asset->price = $price;
     $asset->bookedAt = date('Y-m-d H:i:s');
@@ -38,7 +38,7 @@ class InMemoryTaxedRepository implements ITaxedRepository
     return $asset;
   }
 
-  public function getMovableAssetCategoryById(int $id): ?AssetCategory
+  public function getMovableAssetCategoryById(int $id): ?AssetCategorySQLiteModel
   {
     if ($this->throwException) {
       throw new \Exception('Some error');
@@ -53,7 +53,7 @@ class InMemoryTaxedRepository implements ITaxedRepository
     return null;
   }
 
-  public function getMovableAssetById(int $id): ?MovableAsset
+  public function getMovableAssetById(int $id): ?MovableAssetSQLiteModel
   {
     if ($this->throwException) {
       throw new \Exception('Some error');

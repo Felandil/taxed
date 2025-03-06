@@ -6,7 +6,7 @@ use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
 use App\Usecase\UsecaseResponse;
 
-use App\Repository\Models\AssetCategory;
+use App\Repository\Models\AssetCategorySQLiteModel;
 
 use Tests\Unit\Repository\InMemoryTaxedRepository;
 use Tests\Unit\MovableAssetTestCase;
@@ -72,7 +72,7 @@ class AddMovableAssetInteractorTest extends MovableAssetTestCase
 
   public function testValidRequestShouldReturnSuccessAndCreatedAsset()
   {
-    $assetCategory = new AssetCategory();
+    $assetCategory = new AssetCategorySQLiteModel();
     $assetCategory->id = 1;
     $assetCategory->exists = true;
 

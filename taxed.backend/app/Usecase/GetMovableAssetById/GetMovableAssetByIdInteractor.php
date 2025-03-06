@@ -30,7 +30,6 @@ class GetMovableAssetByIdInteractor
 
       return new GetMovableAssetByIdResponse(UsecaseResponse::CODE_SUCCESS, $asset);
     } catch (Exception $e) {
-      echo $e;
       return new GetMovableAssetByIdResponse(UsecaseResponse::CODE_UNKNOWN_ERROR);
     }
   }

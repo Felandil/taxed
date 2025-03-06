@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Repository\Models\MovableAsset;
+use App\Repository\Models\MovableAssetSQLiteModel;
 use App\Repository\TaxedSQLiteRepository;
 
 use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
@@ -113,7 +113,7 @@ class AssetController extends Controller
      */
     public function getAll()
     {
-        $assets = MovableAsset::all();
+        $assets = MovableAssetSQLiteModel::all();
         return response()->json($assets);
     }
 }

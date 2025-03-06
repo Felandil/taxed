@@ -5,7 +5,7 @@ namespace Tests\Unit\Usecase\GetMovableAssetById;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdInteractor;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdRequest;
 use App\Usecase\UsecaseResponse;
-use App\Repository\Models\MovableAsset;
+use App\Repository\Models\MovableAssetSQLiteModel;
 
 use Tests\Unit\Repository\InMemoryTaxedRepository;
 use Tests\Unit\MovableAssetTestCase;
@@ -33,7 +33,7 @@ class GetMovableAssetByIdInteractorTest extends MovableAssetTestCase
 
   public function testAssetExistsShouldReturnAssetAndCodeSuccess()
   {
-    $asset = new MovableAsset();
+    $asset = new MovableAssetSQLiteModel();
     $asset->exists = true;
     $asset->id = 1;
     $asset->name = 'SomeAsset';

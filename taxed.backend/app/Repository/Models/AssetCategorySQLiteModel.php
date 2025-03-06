@@ -4,7 +4,7 @@ namespace App\Repository\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AssetCategory extends Model
+class AssetCategorySQLiteModel extends Model
 {
     protected $table = 'asset_categories';
 
@@ -18,12 +18,12 @@ class AssetCategory extends Model
 
     public function parent()
     {
-        return $this->belongsTo(AssetCategory::class, 'parent_id');
+        return $this->belongsTo(AssetCategorySQLiteModel::class, 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany(AssetCategory::class, 'parent_id');
+        return $this->hasMany(AssetCategorySQLiteModel::class, 'parent_id');
     }
 
     public function categories()

@@ -6,8 +6,8 @@ use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Grammars\Grammar;
 use Illuminate\Database\Query\Processors\Processor;
 
-use App\Repository\Models\AssetCategory;
-use App\Repository\Models\MovableAsset;
+use App\Repository\Models\AssetCategorySQLiteModel;
+use App\Repository\Models\MovableAssetSQLiteModel;
 
 use Tests\Unit\Repository\DummyConnectionResolver;
 
@@ -34,8 +34,8 @@ abstract class MovableAssetTestCase extends TestCase {
 
     $dummyResolver = new DummyConnectionResolver($dummyConnection);
 
-    AssetCategory::setConnectionResolver($dummyResolver);
-    MovableAsset::setConnectionResolver($dummyResolver);
+    AssetCategorySQLiteModel::setConnectionResolver($dummyResolver);
+    MovableAssetSQLiteModel::setConnectionResolver($dummyResolver);
   }
 
   protected function tearDown(): void

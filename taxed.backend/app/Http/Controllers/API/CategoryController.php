@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Routing\Controller;
-use App\Repository\Models\AssetCategory;
+use App\Repository\Models\AssetCategorySQLiteModel;
 use App\Http\DTO\AssetCategoryResponse;
 
 class CategoryController extends Controller
@@ -20,7 +20,7 @@ class CategoryController extends Controller
    */
   public function getAll()
   {
-    $categories = AssetCategory::with('categories')
+    $categories = AssetCategorySQLiteModel::with('categories')
       ->whereNull('parent_id')
       ->get();
 
@@ -57,7 +57,7 @@ class CategoryController extends Controller
    */
   public function get($id)
   {
-    $category = AssetCategory::find($id);
+    $category = AssetCategorySQLiteModel::find($id);
 
     if (!$category) {
       return response()->json(['error' => 'Kategorie nicht gefunden'], 404);

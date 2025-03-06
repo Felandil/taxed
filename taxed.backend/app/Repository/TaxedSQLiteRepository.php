@@ -2,8 +2,8 @@
 
 namespace App\Repository;
 
-use App\Repository\Models\MovableAsset;
-use App\Repository\Models\AssetCategory;
+use App\Repository\Models\MovableAssetSQLiteModel;
+use App\Repository\Models\AssetCategorySQLiteModel;
 use Illuminate\Database\DatabaseManager;
 
 class TaxedSQLiteRepository implements ITaxedRepository
@@ -16,11 +16,11 @@ class TaxedSQLiteRepository implements ITaxedRepository
   }
 
   /**
-   * @return MovableAsset[]
+   * @return MovableAssetSQLiteModel[]
    */
   public function loadMovableAssets(): array
   {
-    $movableAssets = MovableAsset::all();
+    $movableAssets = MovableAssetSQLiteModel::all();
 
     return $movableAssets->toArray();
   }
@@ -28,11 +28,11 @@ class TaxedSQLiteRepository implements ITaxedRepository
   /**
    * @param int $id
    * 
-   * @return AssetCategory|null
+   * @return AssetCategorySQLiteModel|null
    */
-  public function getMovableAssetCategoryById(int $id): ?AssetCategory
+  public function getMovableAssetCategoryById(int $id): ?AssetCategorySQLiteModel
   {
-    return AssetCategory::find($id);
+    return AssetCategorySQLiteModel::find($id);
   }
 
   /**
@@ -40,11 +40,11 @@ class TaxedSQLiteRepository implements ITaxedRepository
    * @param float $price
    * @param int $categoryId
    * 
-   * @return MovableAsset
+   * @return MovableAssetSQLiteModel
    */
-  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAsset
+  public function addMovableAsset(string $name, float $price, int $categoryId): MovableAssetSQLiteModel
   {
-    $asset = new MovableAsset();
+    $asset = new MovableAssetSQLiteModel();
     $asset->name = $name;
     $asset->price = $price;
     $asset->bookedAt = date('Y-m-d H:i:s');
@@ -55,8 +55,8 @@ class TaxedSQLiteRepository implements ITaxedRepository
     return $asset;
   }
 
-  public function getMovableAssetById(int $id): ?MovableAsset
+  public function getMovableAssetById(int $id): ?MovableAssetSQLiteModel
   {
-    return MovableAsset::find($id);
+    return MovableAssetSQLiteModel::find($id);
   }
 }

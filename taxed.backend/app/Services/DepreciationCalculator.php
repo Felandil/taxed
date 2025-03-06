@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Repository\Models\AssetCategory;
-use App\Repository\Models\MovableAsset;
+use App\Repository\Models\MovableAssetSQLiteModel;
 
 use Carbon\Carbon;
 
 class DepreciationCalculator
 {
-  public static function calculateDepreciation(MovableAsset $asset)
+  public static function calculateDepreciation(MovableAssetSQLiteModel $asset)
   {
     $category = $asset->assetCategory();
 

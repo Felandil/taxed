@@ -4,7 +4,7 @@ namespace App\Repository\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MovableAsset extends Model
+class MovableAssetSQLiteModel extends Model
 {
     protected $table = 'moveable_assets';
 
@@ -24,6 +24,6 @@ class MovableAsset extends Model
 
     public function assetCategory()
     {
-        return $this->belongsTo(AssetCategory::class, 'asset_category_id');
+        return $this->belongsTo(AssetCategorySQLiteModel::class, 'asset_category_id');
     }
 }
