@@ -70,6 +70,9 @@ class AssetCategory
     return $this->depreciationRate;
   }
 
+  /**
+   * @return array
+   */
   public function __serialize(): array
   {
     return [

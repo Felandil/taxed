@@ -87,6 +87,9 @@ class MovableAsset
     return $this->category;
   }
 
+  /**
+   * @return array
+   */
   public function __serialize(): array
   {
     return [

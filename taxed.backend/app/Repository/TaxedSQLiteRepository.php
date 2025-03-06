@@ -19,16 +19,6 @@ class TaxedSQLiteRepository implements ITaxedRepository
   }
 
   /**
-   * @return MovableAsset[]
-   */
-  public function loadMovableAssets(): array
-  {
-    $movableAssets = MovableAssetSQLiteModel::all();
-
-    return $movableAssets->toArray();
-  }
-
-  /**
    * @param int $id
    * 
    * @return AssetCategory|null
