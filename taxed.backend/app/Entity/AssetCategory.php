@@ -69,17 +69,4 @@ class AssetCategory
   {
     return $this->depreciationRate;
   }
-
-  /**
-   * @return array
-   */
-  public function __serialize(): array
-  {
-    return [
-      'id' => $this->id,
-      'name' => $this->name,
-      'usefulLife' => $this->usefulLife,
-      'depreciationRate' => $this->depreciationRate,
-    ];
-  }
 }

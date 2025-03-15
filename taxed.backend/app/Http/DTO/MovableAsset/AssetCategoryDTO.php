@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\DTO\MovableAsset;
+
 use App\Entity\AssetCategory;
 
 class AssetCategoryDTO
@@ -7,54 +9,22 @@ class AssetCategoryDTO
     /**
    * @var int
    */
-  private $id;
+  public $id;
 
   /**
    * @var string
    */
-  private $name;
+  public $name;
 
   /**
    * @var int
    */
-  private $usefulLife;
+  public $usefulLife;
 
   /**
    * @var int
    */
-  private $depreciationRate;
-
-    /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
-  }
-
-  /**
-   * @return string
-   */
-  public function getName(): string
-  {
-    return $this->name;
-  }
-
-  /**
-   * @return int
-   */
-  public function getUsefulLife(): int
-  {
-    return $this->usefulLife;
-  }
-
-  /**
-   * @return int
-   */
-  public function getDepreciationRate(): int
-  {
-    return $this->depreciationRate;
-  }
+  public $depreciationRate;
 
   /**
    * @param AssetCategory $category

@@ -1,73 +1,37 @@
 <?php
 
+namespace App\Http\DTO\MovableAsset;
+
 use App\Entity\DepreciationPeriod;
+use DateTime;
+use NumberFormatter;
 
 class DepreciationPeriodDTO
 {
   /**
    * @var string
    */
-  private string $period;
+  public string $period;
 
     /**
    * @var string
    */
-  private string $startDate;
+  public string $startDate;
 
   /**
    * @var string
    */
-  private string $endDate;
+  public string $endDate;
 
   /**
    * @var float
    */
-  private float $depreciation;
+  public float $depreciation;
 
-    /**
+  /**
    * @var string
    */
-  private float $depreciationFormatted;
-
-  /**
-   * @return string
-   */
-  public function getPeriod(): string
-  {
-    return $this->period;
-  }
-
-  /**
-   * @return string
-   */
-  public function getStartDate(): string
-  {
-    return $this->startDate;
-  }
-
-  /**
-   * @return string
-   */
-  public function getEndDate(): string
-  {
-    return $this->endDate;
-  }
-
-  /**
-   * @return float
-   */
-  public function getDepreciation(): float
-  {
-    return $this->depreciation;
-  }
-
-  /**
-   * @return string
-   */
-  public function getDepreciationFormatted(): string  
-  {
-    return $this->depreciationFormatted;
-  }
+  public string $depreciationFormatted;
 
   /**
    * @param DepreciationPeriod $depreciationPeriod

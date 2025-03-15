@@ -7,7 +7,7 @@ use App\Entity\DepreciationPeriod;
 
 use Carbon\Carbon;
 
-class DepreciationCalculator
+class DepreciationCalculator implements IDepreciationCalculator
 {
   /**
    * @var Carbon

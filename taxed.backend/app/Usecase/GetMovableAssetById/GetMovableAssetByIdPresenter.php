@@ -2,6 +2,7 @@
 
 namespace App\Usecase\GetMovableAssetById;
 
+use App\Http\DTO\MovableAsset\MovableAssetDTO;
 use App\Usecase\UsecasePresenter;
 use App\Usecase\UsecaseResponse;
 use App\Usecase\GetMovableAssetById\GetMovableAssetByIdResponse;
@@ -19,7 +20,7 @@ class GetMovableAssetByIdPresenter extends UsecasePresenter
     return response()->json([
       'code' => $response->code,
       'message' => $response->getMessageForCode(),
-      'asset' => $response->asset->__serialize()
+      'asset' => MovableAssetDTO::fromEntity($response->asset, $response->depreciation)
     ], 200);
   }
 }

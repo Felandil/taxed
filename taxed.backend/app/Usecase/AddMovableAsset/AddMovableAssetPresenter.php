@@ -2,6 +2,7 @@
 
 namespace App\Usecase\AddMovableAsset;
 
+use App\Http\DTO\MovableAsset\MovableAssetDTO;
 use App\Usecase\AddMovableAsset\AddMovableAssetResponse;
 use App\Usecase\UsecasePresenter;
 use App\Usecase\UsecaseResponse;
@@ -22,7 +23,7 @@ class AddMovableAssetPresenter extends UsecasePresenter
     return response()->json([
       'code' => $response->code,
       'message' => $response->getMessageForCode(),
-      'asset' => $response->asset
+      'asset' => MovableAssetDTO::fromEntity($response->asset)
     ], 201)->header('Location', $locationUrl);
   }
 }

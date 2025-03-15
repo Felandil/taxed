@@ -1,119 +1,88 @@
 <?php
 
+namespace App\Http\DTO\MovableAsset;
+
 use App\Entity\DepreciationPeriod;
 use App\Entity\MovableAsset;
+use DateTime;
+use NumberFormatter;
 
 class MovableAssetDTO
 {
   /**
    * @var int
    */
-  private $id;
+  public int $id;
 
   /**
    * @var string
    */
-  private $name;
+  public string $name;
 
   /**
    * @var float
    */
-  private $price;
+  public float $price;
 
   /**
    * @var string
    */
-  private $priceFormatted;
+  public string $priceFormatted;
 
   /**
    * @var string
    */
-  private $bookedAt;
+  public string $bookedAt;
 
   /**
    * @var float
    */
-  private $monthlyDepreciation;
+  public float $monthlyDepreciation;
 
   /**
    * @var string
    */
-  private $monthlyDepreciationFormatted;
+  public string $monthlyDepreciationFormatted;
 
   /**
    * @var AssetCategoryDTO
    */
-  private $category;
+  public AssetCategoryDTO $category;
 
   /**
-   * @return DepreciationPeriodDTO[]
+   * @return ?DepreciationPeriodDTO[]
    */
-  private $depreciation;
-
-  /**
-   * @return int
-   */
-  public function getId(): int
-  {
-    return $this->id;
-  }
-
-  /**
-   * @return string
-   */
-  public function getName(): string
-  {
-    return $this->name;
-  }
-
-  /**
-   * @return float
-   */
-  public function getPrice(): float
-  {
-    return $this->price;
-  }
-
-  /**
-   * @return string
-   */
-  public function getPriceFormatted(): string
-  {
-    return $this->priceFormatted;
-  }
-
-  /**
-   * @return DateTime
-   */
-  public function getBookedAt(): string
-  {
-    return $this->bookedAt;
-  }
-
-  /**
-   * @return AssetCategoryDTO
-   */
-  public function getCategory(): AssetCategoryDTO
-  {
-    return $this->category;
-  }
-
-  /**
-   * @return DepreciationPeriodDTO[]
-   */
-  public function getDepreciation(): DepreciationPeriodDTO
-  {
-    return $this->depreciation;
-  }
+  public ?array $depreciationPeriods;
 
   /**
    * @param MovableAsset $entity
-   * @param DepreciationPeriodDTO[] $depreciationPeriods
+   * @param ?DepreciationPeriod[] $depreciationPeriods
    * 
    * @return void
    */
-  public static function fromEntity(MovableAsset $entity, array $depreciationPeriods): self
+  public static function fromEntity(MovableAsset $entity, ?array $depreciationPeriods = null): self
   {
-    
+    $formatter = new NumberFormatter('de_DE', NumberFormatter::CURRENCY);
+
+    $dto = new self();
+    $dto->id = $entity->getId();
+    $dto->name = $entity->getName();
+    $dto->price = $entity->getPrice();
+    $dto->priceFormatted = $formatter->formatCurrency($entity->getPrice(), "EUR");
+    $dto->bookedAt = $entity->getBookedAt()->format(DateTime::ATOM);
+
+    $dto->category = AssetCategoryDTO::fromEntity($entity->getCategory());
+
+    $dto->monthlyDepreciation = $entity->getMonthlyDepreciation();
+    $dto->monthlyDepreciationFormatted = $formatter->formatCurrency($entity->getMonthlyDepreciation(), "EUR");
+
+    if (isset($depreciationPeriods)) {
+      /** @var DepreciationPeriod $period */
+      foreach ($depreciationPeriods as $period) {
+        $dto->depreciationPeriods[] = DepreciationPeriodDTO::fromEntity($period);
+      }
+    }
+
+    return $dto;
   }
 }

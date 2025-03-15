@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Repository\Models\MovableAssetSQLiteModel;
 use App\Repository\TaxedSQLiteRepository;
 
+use App\Services\IDepreciationCalculator;
 use App\Usecase\AddMovableAsset\AddMovableAssetInteractor;
 use App\Usecase\AddMovableAsset\AddMovableAssetRequest;
 use App\Usecase\AddMovableAsset\AddMovableAssetPresenter;
@@ -17,11 +18,20 @@ use Illuminate\Routing\Controller;
 
 class AssetController extends Controller
 {
+    /**
+     * @var IDepreciationCalculator
+     */
+    private $depreciationCalculator;
+
+    /**
+     * @var TaxedSQLiteRepository
+     */
     private $repository;
 
-    public function __construct(TaxedSQLiteRepository $repository)
+    public function __construct(TaxedSQLiteRepository $repository, IDepreciationCalculator $depreciationCalculator)
     {
         $this->repository = $repository;
+        $this->depreciationCalculator = $depreciationCalculator;
     }
 
     /**
@@ -92,7 +102,7 @@ class AssetController extends Controller
     public function get(int $id)
     {
         try {
-            $interactor = new GetMovableAssetByIdInteractor($this->repository);
+            $interactor = new GetMovableAssetByIdInteractor($this->repository, $this->depreciationCalculator);
             $response = $interactor->execute(new GetMovableAssetByIdRequest($id));
 
             return new GetMovableAssetByIdPresenter()->present($response);
