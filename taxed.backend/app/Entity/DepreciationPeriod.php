@@ -60,7 +60,7 @@ class DepreciationPeriod
   /**
    * @return string
    */
-  public function getDepreciationPeriod() :string
+  public function format() :string
   {
     return $this->startDate->format('d.m.Y') . '-' . $this->endDate->format('d.m.Y');
   }
